@@ -50,11 +50,17 @@ class TasksAdapter(private val listener: OnItemClickListener) :
             binding.apply {
                 checkBoxCompleted.isChecked = task.completed
                 textViewName.text = task.name
+                textViewDescription.text = task.description
+                textViewDescription.isVisible = !task.description.isNullOrBlank()
+
                 textViewName.paint.isStrikeThruText = task.completed
                 labelPriority.isVisible = task.important
             }
+
         }
+
     }
+
 
     interface OnItemClickListener {
         fun onItemClick(task: Task)
@@ -65,4 +71,6 @@ class TasksAdapter(private val listener: OnItemClickListener) :
         override fun areItemsTheSame(oldItem: Task, newItem: Task) = oldItem.id == newItem.id
         override fun areContentsTheSame(oldItem: Task, newItem: Task) = oldItem == newItem
     }
+
 }
+

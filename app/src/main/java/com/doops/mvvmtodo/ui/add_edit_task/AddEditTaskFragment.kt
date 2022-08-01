@@ -18,34 +18,39 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddEditTaskFragment : Fragment(R.layout.fragment_add_edit_task) {
-    private val viewmodel: AddEditTaskViewModel by viewModels()
+    private val viewModel: AddEditTaskViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAddEditTaskBinding.bind(view)
         binding.apply {
-            editTextTaskName.setText(viewmodel.taskName)
-            checkBoxImportant.isChecked = viewmodel.taskImportance
+            editTextTaskName.setText(viewModel.taskName)
+            editTextTaskDescription.setText(viewModel.taskDescription)
+
+            checkBoxImportant.isChecked = viewModel.taskImportance
             checkBoxImportant.jumpDrawablesToCurrentState()
 
-            textViewDateCreated.isVisible = viewmodel.task != null
+            textViewDateCreated.isVisible = viewModel.task != null
 
-            textViewDateCreated.text = "Created: ${viewmodel.task?.createdDateFormat}"
+            textViewDateCreated.text = "Created: ${viewModel.task?.createdDateFormat}"
 
             editTextTaskName.addTextChangedListener {
-                viewmodel.taskName = it.toString()
+                viewModel.taskName = it.toString()
+            }
+            editTextTaskDescription.addTextChangedListener {
+                viewModel.taskDescription = it.toString()
             }
             checkBoxImportant.setOnCheckedChangeListener { _, isChecked ->
-                viewmodel.taskImportance = isChecked
+                viewModel.taskImportance = isChecked
             }
 
             fabAddTask.setOnClickListener {
-                viewmodel.onSaveTaskClick();
+                viewModel.onSaveTaskClick();
             }
 
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewmodel.addEditTaskEvent.collect { event ->
+            viewModel.addEditTaskEvent.collect { event ->
                 when (event) {
                     is AddEditTaskViewModel.AddEditTaskEvent.NavigateBackWithResult -> {
                         binding.editTextTaskName.clearFocus()
@@ -58,7 +63,7 @@ class AddEditTaskFragment : Fragment(R.layout.fragment_add_edit_task) {
                     is AddEditTaskViewModel.AddEditTaskEvent.ShowInvalidInputMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
                     }
-                }.exhaustive
+                }
             }
         }
     }

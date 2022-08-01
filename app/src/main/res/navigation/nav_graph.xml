@@ -25,9 +25,9 @@
             app:nullable="true" />
         <argument
             android:name="title"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
     <dialog
         android:id="@+id/deleteAllCompletedDialogFragment"
