@@ -20,6 +20,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Specifies one flavor dimension.
+    flavorDimensions "version"
+    productFlavors {
+        internal {
+            // Assigns this product flavor to the "version" flavor dimension.
+            // If you are using only one dimension, this property is optional,
+            // and the plugin automatically assigns all the module's flavors to
+            // that dimension.
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix ".demo"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
